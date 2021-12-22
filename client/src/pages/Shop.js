@@ -11,8 +11,12 @@ import {fetchBrands, fetchDevices, fetchTypes} from "../http/deviceAPI";
 import Pages from "../components/Pages";
 
 const Shop = observer(() => {
+    //Получаем контекст в дочернем компоненте
     const {device} = useContext(Context)
 
+    //После рендеринга, когда будет готова html-разметка, выполним
+    //запрос  к серверу на загрузку типов, брендов и устройств
+    //поместим их все в хранилище данных MobX
     useEffect(() => {
         fetchTypes().then(data => device.setTypes(data))
         fetchBrands().then(data => device.setBrands(data))
@@ -22,13 +26,14 @@ const Shop = observer(() => {
         })
     }, [])
 
+    //При измененииномера страницы, выбранного типа или бренда обновляем данные
     useEffect(() => {
         fetchDevices(device.selectedType.id, device.selectedBrand.id, device.page, 2).then(data => {
             device.setDevices(data.rows)
             device.setTotalCount(data.count)
         })
     }, [device.page, device.selectedType, device.selectedBrand,])
-
+    //Определяем разметку компонента
     return (
         <Container>
             <Row className="mt-2">

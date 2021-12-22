@@ -6,9 +6,17 @@ import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 
 const AppRouter = observer(() => {
+    //Создаем контекст, чтобы объект user был доступен внутри данного компонента
     const {user} = useContext(Context)
 
     console.log(user)
+    /*Route - отдельный маршрут
+    path - путь до страницы 
+    component - компонент страницы
+    exact - отработает, если path будет полностью совпадать с запрошенным url
+    key - нужен для эффективного рендеринга
+    Redirect - отработает, если ни один url не выполнится, to - путь
+    */
     return (
         <Switch>
             {user.isAuth && authRoutes.map(({path, Component}) =>
